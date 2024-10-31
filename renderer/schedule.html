@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="main.css">
+    <title>Manage Schedule</title>
+</head>
+<body>
+    <div>
+        <h2>Manage Schedule</h2>
+        <input type="text" id="team1" placeholder="Team 1" required>
+        <input type="text" id="team2" placeholder="Team 2" required>
+        <input type="date" id="date" required>
+        <input type="time" id="time" required>
+        <button id="add-match-btn">Add Match</button>
+        <p id="message"></p>
+    </div>
+    <script>
+        document.getElementById('add-match-btn').addEventListener('click', async () => {
+            const team1 = document.getElementById('team1').value;
+            const team2 = document.getElementById('team2').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+
+            const matchDetails = { team1, team2, date, time };
+
+            try {
+                const response = await fetch('http://localhost:3000/add-match', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(matchDetails)
+                });
+
+                if (response.ok) {
+                    document.getElementById('message').innerText = 'Match added successfully!';
+                } else {
+                    throw new Error('Failed to add match');
+                }
+            } catch (error) {
+                document.getElementById('message').innerText = error.message;
+            }
+        });
+    </script>
+</body>
+</html>
